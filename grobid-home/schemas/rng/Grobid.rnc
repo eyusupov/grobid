@@ -6,7 +6,7 @@ default namespace tei = "http://www.tei-c.org/ns/1.0"
 namespace teix = "http://www.tei-c.org/ns/Examples"
 namespace xlink = "http://www.w3.org/1999/xlink"
 
-# Schema generated from ODD source 2020-05-17T10:41:33Z. .
+# Schema generated from ODD source 2020-05-17T10:50:16Z. .
 # TEI Edition: Version 4.0.0. Last updated on
 #	13th February 2020, revision ccd19b0ba
 # TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
@@ -917,6 +917,21 @@ tei_att.sortable.attribute.sortKey =
   attribute sortKey {
     xsd:token { pattern = "[^\p{C}\p{Z}]+" }
   }?
+tei_att.translatable.attributes =
+  tei_att.translatable.attribute.versionDate
+tei_att.translatable.attribute.versionDate =
+  
+  ## specifies the date on which the source text was extracted and sent to the translator
+  attribute versionDate {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
 tei_att.citing.attributes =
   tei_att.citing.attribute.unit,
   tei_att.citing.attribute.from,
@@ -1067,12 +1082,12 @@ tei_model.headLike_sequence = tei_head
 tei_model.headLike_sequenceOptional = tei_head?
 tei_model.headLike_sequenceOptionalRepeatable = tei_head*
 tei_model.headLike_sequenceRepeatable = tei_head+
-tei_model.labelLike = tei_label
-tei_model.labelLike_alternation = tei_label
-tei_model.labelLike_sequence = tei_label
-tei_model.labelLike_sequenceOptional = tei_label?
-tei_model.labelLike_sequenceOptionalRepeatable = tei_label*
-tei_model.labelLike_sequenceRepeatable = tei_label+
+tei_model.labelLike = tei_desc | tei_label
+tei_model.labelLike_alternation = tei_desc | tei_label
+tei_model.labelLike_sequence = tei_desc, tei_label
+tei_model.labelLike_sequenceOptional = tei_desc?, tei_label?
+tei_model.labelLike_sequenceOptionalRepeatable = tei_desc*, tei_label*
+tei_model.labelLike_sequenceRepeatable = tei_desc+, tei_label+
 tei_model.listLike = tei_list | tei_listObject | tei_table
 tei_model.listLike_alternation = tei_list | tei_listObject | tei_table
 tei_model.listLike_sequence = tei_list, tei_listObject, tei_table
@@ -1143,7 +1158,7 @@ tei_model.publicationStmtPart.detail =
   | tei_idno
   | tei_availability
 tei_model.availabilityPart = tei_licence
-tei_model.descLike = notAllowed
+tei_model.descLike = tei_desc
 tei_model.quoteLike = notAllowed
 tei_model.quoteLike_alternation = notAllowed
 tei_model.quoteLike_sequence = empty
@@ -1277,7 +1292,7 @@ tei_model.limitedPhrase =
 tei_model.divLike = tei_div
 tei_model.divGenLike = notAllowed
 tei_model.div1Like = notAllowed
-tei_model.applicationLike = notAllowed
+tei_model.applicationLike = tei_application
 tei_model.teiHeaderPart =
   tei_encodingDesc | tei_profileDesc | tei_xenoData
 tei_model.sourceDescPart = notAllowed
@@ -1388,6 +1403,44 @@ tei_hi =
     tei_macro.paraContent,
     tei_att.global.attributes,
     tei_att.written.attributes,
+    empty
+  }
+tei_desc =
+  
+  ## (description) contains a brief description of the object documented by its parent element, typically a documentation element or an entity. [22.4.1. Description of Components]
+  element desc {
+    tei_macro.limitedContent
+    >> sch:pattern [
+         id =
+           "Grobid-desc-deprecationInfo-only-in-deprecated-constraint-rule-8"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:desc[ @type eq 'deprecationInfo']"
+           "\x{a}" ~
+           "               "
+           sch:assert [
+             test = "../@validUntil"
+             "Information about a\x{a}" ~
+             "        deprecation should only be present in a specification element\x{a}" ~
+             "        that is being deprecated: that is, only an element that has a\x{a}" ~
+             "        @validUntil attribute should have a child <desc\x{a}" ~
+             '        type="deprecationInfo">.'
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    tei_att.global.attributes,
+    tei_att.translatable.attributes,
+    tei_att.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    attribute type {
+      xsd:token { pattern = "[^\p{C}\p{Z}]+" }
+    }?,
     empty
   }
 tei_term =
@@ -1547,13 +1600,13 @@ tei_list =
   
   ## contains any sequence of items organized as a list. [3.7. Lists]
   element list {
-    ((tei_model.divTop | tei_model.global)*,
+    ((tei_model.divTop | tei_model.global | tei_desc*)*,
      ((tei_item, tei_model.global*)+
       | (tei_label, tei_model.global*, tei_item, tei_model.global*)+),
      (tei_model.divBottom, tei_model.global*)*)
     >> sch:pattern [
          id =
-           "Grobid-list-gloss-list-must-have-labels-constraint-rule-8"
+           "Grobid-list-gloss-list-must-have-labels-constraint-rule-9"
          "\x{a}" ~
          "            "
          sch:rule [
@@ -2107,6 +2160,26 @@ tei_appInfo =
   ## (application information) records information about an application which has edited the TEI file. [2.3.11. The Application Information Element]
   element appInfo {
     tei_model.applicationLike+, tei_att.global.attributes, empty
+  }
+tei_application =
+  
+  ## provides information about an application which has acted upon the document. [2.3.11. The Application Information Element]
+  element application {
+    (tei_model.labelLike+, (tei_model.ptrLike* | tei_model.pLike*)),
+    tei_att.global.attributes,
+    tei_att.typed.attributes,
+    tei_att.datable.attributes,
+    
+    ## supplies an identifier for the application, independent of its version number or display name.
+    attribute ident { xsd:Name },
+    
+    ## supplies a version number for the application, independent of its identifier or display name.
+    attribute version {
+      xsd:token {
+        pattern = "[\d]+[a-z]*[\d]*(\.[\d]+[a-z]*[\d]*){0,3}"
+      }
+    },
+    empty
   }
 tei_profileDesc =
   
@@ -2730,7 +2803,7 @@ tei_listObject =
   
   ## (list of objects) contains a list of descriptions, each of which provides information about an identifiable physical object. [13.3.5. Objects]
   element listObject {
-    (tei_model.headLike*, tei_model.objectLike+, empty*),
+    (tei_model.headLike*, tei_desc*, tei_model.objectLike+, empty*),
     tei_att.global.attributes,
     tei_att.typed.attributes,
     tei_att.declarable.attributes,
@@ -2822,7 +2895,7 @@ tei_link =
   element link {
     empty
     >> sch:pattern [
-         id = "Grobid-link-linkTargets3-constraint-assert-5"
+         id = "Grobid-link-linkTargets3-constraint-assert-6"
          "\x{a}" ~
          "            "
          sch:rule [

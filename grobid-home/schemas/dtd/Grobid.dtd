@@ -1,6 +1,6 @@
 
 <!--
-DTD generated from ODD source 2020-05-17T10:40:51Z. .
+DTD generated from ODD source 2020-05-17T10:49:46Z. .
 TEI Edition: Version 4.0.0. Last updated on
 	13th February 2020, revision ccd19b0ba
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
@@ -441,6 +441,10 @@ evaluate (all|one|none) #IMPLIED'>
 sortKey %teidata.word;  #IMPLIED'>
 <!ENTITY % tei_att.sortable.attributes '
  %tei_att.sortable.attribute.sortKey;'> 
+<!ENTITY % tei_att.translatable.attribute.versionDate '
+versionDate %teidata.temporal.w3c;  #IMPLIED'>
+<!ENTITY % tei_att.translatable.attributes '
+ %tei_att.translatable.attribute.versionDate;'> 
 <!ENTITY % tei_att.citing.attribute.unit '
 unit %teidata.enumerated;  #IMPLIED'>
 
@@ -573,11 +577,11 @@ to %teidata.word;  #IMPLIED'>
 <!ENTITY % model.headLike_sequenceOptional "head?"> 
 <!ENTITY % model.headLike_sequenceOptionalRepeatable "head*"> 
 <!ENTITY % model.headLike_sequenceRepeatable "head+"> 
-<!ENTITY % model.labelLike "label"> 
-<!ENTITY % model.labelLike_sequence "label"> 
-<!ENTITY % model.labelLike_sequenceOptional "label?"> 
-<!ENTITY % model.labelLike_sequenceOptionalRepeatable "label*"> 
-<!ENTITY % model.labelLike_sequenceRepeatable "label+"> 
+<!ENTITY % model.labelLike "desc |label"> 
+<!ENTITY % model.labelLike_sequence "desc, label"> 
+<!ENTITY % model.labelLike_sequenceOptional "desc?, label?"> 
+<!ENTITY % model.labelLike_sequenceOptionalRepeatable "desc*, label*"> 
+<!ENTITY % model.labelLike_sequenceRepeatable "desc+, label+"> 
 <!ENTITY % model.listLike "list |listObject |table"> 
 <!ENTITY % model.listLike_sequence "list, listObject, table"> 
 <!ENTITY % model.listLike_sequenceOptional "list?, listObject?, table?"> 
@@ -663,11 +667,11 @@ to %teidata.word;  #IMPLIED'>
 <!ENTITY % model.availabilityPart_sequenceOptional "licence?"> 
 <!ENTITY % model.availabilityPart_sequenceOptionalRepeatable "licence*"> 
 <!ENTITY % model.availabilityPart_sequenceRepeatable "licence+"> 
-<!ENTITY % model.descLike ""> 
-<!ENTITY % model.descLike_sequence ""> 
-<!ENTITY % model.descLike_sequenceOptional ""> 
-<!ENTITY % model.descLike_sequenceOptionalRepeatable ""> 
-<!ENTITY % model.descLike_sequenceRepeatable ""> 
+<!ENTITY % model.descLike "desc"> 
+<!ENTITY % model.descLike_sequence "desc"> 
+<!ENTITY % model.descLike_sequenceOptional "desc?"> 
+<!ENTITY % model.descLike_sequenceOptionalRepeatable "desc*"> 
+<!ENTITY % model.descLike_sequenceRepeatable "desc+"> 
 <!ENTITY % model.quoteLike ""> 
 <!ENTITY % model.quoteLike_sequence ""> 
 <!ENTITY % model.quoteLike_sequenceOptional ""> 
@@ -793,11 +797,11 @@ to %teidata.word;  #IMPLIED'>
 <!ENTITY % model.div1Like_sequenceOptional ""> 
 <!ENTITY % model.div1Like_sequenceOptionalRepeatable ""> 
 <!ENTITY % model.div1Like_sequenceRepeatable ""> 
-<!ENTITY % model.applicationLike ""> 
-<!ENTITY % model.applicationLike_sequence ""> 
-<!ENTITY % model.applicationLike_sequenceOptional ""> 
-<!ENTITY % model.applicationLike_sequenceOptionalRepeatable ""> 
-<!ENTITY % model.applicationLike_sequenceRepeatable ""> 
+<!ENTITY % model.applicationLike "application"> 
+<!ENTITY % model.applicationLike_sequence "application"> 
+<!ENTITY % model.applicationLike_sequenceOptional "application?"> 
+<!ENTITY % model.applicationLike_sequenceOptionalRepeatable "application*"> 
+<!ENTITY % model.applicationLike_sequenceRepeatable "application+"> 
 <!ENTITY % model.teiHeaderPart "encodingDesc |profileDesc |xenoData"> 
 <!ENTITY % model.teiHeaderPart_sequence "encodingDesc, profileDesc, xenoData"> 
 <!ENTITY % model.teiHeaderPart_sequenceOptional "encodingDesc?, profileDesc?, xenoData?"> 
@@ -1020,10 +1024,19 @@ type %teidata.enumerated;  #IMPLIED >
  %tei_att.global.attributes;
  %tei_att.typed.attributes; >
 <!--doc:(application information) records information about an application which has edited the TEI file. [2.3.11. The Application Information Element] -->
-<!ELEMENT appInfo (_DUMMY_model.applicationLike)+>
+<!ELEMENT appInfo (%model.applicationLike;)+>
 <!ATTLIST appInfo xmlns CDATA "http://www.tei-c.org/ns/1.0">
 <!ATTLIST appInfo
  %tei_att.global.attributes; >
+<!--doc:provides information about an application which has acted upon the document. [2.3.11. The Application Information Element] -->
+<!ELEMENT application (((%model.labelLike;)+,((%model.ptrLike;)*|(%model.pLike;)*)))>
+<!ATTLIST application xmlns CDATA "http://www.tei-c.org/ns/1.0">
+<!ATTLIST application
+ %tei_att.global.attributes;
+ %tei_att.typed.attributes;
+ %tei_att.datable.attributes;
+ident %teidata.name;  #REQUIRED
+version %teidata.versionNumber;  #REQUIRED >
 <!--doc:in a bibliographic reference, contains the name(s) of an author, personal or corporate, of a work; for example in the same form as that provided by a recognized bibliographic name authority. [3.11.2.2. Titles, Authors, and Editors 2.2.1. The Title Statement] -->
 <!ELEMENT author %macro.phraseSeq;>
 <!ATTLIST author xmlns CDATA "http://www.tei-c.org/ns/1.0">
@@ -1134,6 +1147,14 @@ type %teidata.enumerated;  #IMPLIED >
  %tei_att.editLike.attributes;
  %tei_att.dimensions.attributes;
  %tei_att.typed.attributes; >
+<!--doc:(description) contains a brief description of the object documented by its parent element, typically a documentation element or an entity. [22.4.1. Description of Components] -->
+<!ELEMENT desc %macro.limitedContent;>
+<!ATTLIST desc xmlns CDATA "http://www.tei-c.org/ns/1.0">
+<!ATTLIST desc
+ %tei_att.global.attributes;
+ %tei_att.translatable.attributes;
+ %tei_att.typed.attribute.subtype;
+type %teidata.enumerated;  #IMPLIED >
 <!--doc:(text division) contains a subdivision of the front, body, or back of a text. [4.1. Divisions of the Body] -->
 <!ELEMENT div (((%model.divTop;|%model.global;)*,((((%model.divLike;|_DUMMY_model.divGenLike),(%model.global;)*)+|(((%model.common;),(%model.global;)*)+,((%model.divLike;|_DUMMY_model.divGenLike),(%model.global;)*)*)),((%model.divBottom;),(%model.global;)*)*)?))>
 <!ATTLIST div xmlns CDATA "http://www.tei-c.org/ns/1.0">
@@ -1207,7 +1228,7 @@ type %teidata.enumerated;  #IMPLIED >
  %tei_att.global.attributes;
  %tei_att.declaring.attributes; >
 <!--doc:indicates the location of a graphic or illustration, either forming part of a text, or providing an image of it. [3.9. Graphics and Other Non-textual Components 11.1. Digital Facsimiles] -->
-<!ELEMENT graphic (_DUMMY_model.descLike)*>
+<!ELEMENT graphic (%model.descLike;)*>
 <!ATTLIST graphic xmlns CDATA "http://www.tei-c.org/ns/1.0">
 <!ATTLIST graphic
  %tei_att.global.attributes;
@@ -1492,7 +1513,7 @@ age %teidata.enumerated;  #IMPLIED >
  %tei_att.global.attributes;
  %tei_att.tableDecoration.attributes; >
 <!--doc:(schema reference) describes or points to a related customization or schema file [2.3.10. The Schema Specification] -->
-<!ELEMENT schemaRef (((_DUMMY_model.descLike)?))>
+<!ELEMENT schemaRef (((%model.descLike;)?))>
 <!ATTLIST schemaRef xmlns CDATA "http://www.tei-c.org/ns/1.0">
 <!ATTLIST schemaRef
  %tei_att.global.attributes;
