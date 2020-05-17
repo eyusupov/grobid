@@ -191,6 +191,14 @@
 		        	</attList>
 				</classSpec>
 
+				<elementSpec ident="application" mode="change" module="header">
+				    <attList>
+					<attDef ident="when" mode="delete"/>
+					<attDef ident="when-iso" mode="change">
+					    <altIdent>when</altIdent>
+					</attDef>
+				    </attList>
+				</elementSpec>
 				<!-- removing elements not used in Grobid results -->
 				<elementSpec ident="ab" mode="delete" module="linking"/>
 				<elementSpec ident="abbr" mode="delete" module="core"/>

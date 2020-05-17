@@ -5,7 +5,7 @@
          xmlns:teix="http://www.tei-c.org/ns/Examples"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://www.tei-c.org/ns/1.0"><!--
-Schema generated from ODD source 2020-05-17T12:13:00Z. .
+Schema generated from ODD source 2020-05-17T12:26:25Z. .
 TEI Edition: Version 4.0.0. Last updated on
 	13th February 2020, revision ccd19b0ba
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
@@ -3403,27 +3403,55 @@ Suggested values include: 1] ISBN; 2] ISSN; 3] DOI; 4] URI; 5] VIAF; 6] ESTC; 7]
       <element name="application">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">provides information about an application which has acted upon the document. [2.3.11. The Application Information Element]</a:documentation>
          <group>
-      
             <oneOrMore>
                <ref name="tei_model.labelLike"/>
             </oneOrMore>
-      
             <choice>
-        
                <zeroOrMore>
                   <ref name="tei_model.ptrLike"/>
                </zeroOrMore>
-        
-        
                <zeroOrMore>
                   <ref name="tei_model.pLike"/>
                </zeroOrMore>
-        
             </choice>
          </group>
          <ref name="tei_att.global.attributes"/>
          <ref name="tei_att.typed.attributes"/>
-         <ref name="tei_att.datable.attributes"/>
+         <ref name="tei_att.datable.attribute.calendar"/>
+         <ref name="tei_att.datable.attribute.period"/>
+         <ref name="tei_att.datable.w3c.attribute.notBefore"/>
+         <ref name="tei_att.datable.w3c.attribute.notAfter"/>
+         <ref name="tei_att.datable.w3c.attribute.from"/>
+         <ref name="tei_att.datable.w3c.attribute.to"/>
+         <ref name="tei_att.datable.iso.attribute.notBefore-iso"/>
+         <ref name="tei_att.datable.iso.attribute.notAfter-iso"/>
+         <ref name="tei_att.datable.iso.attribute.from-iso"/>
+         <ref name="tei_att.datable.iso.attribute.to-iso"/>
+         <ref name="tei_att.datable.custom.attribute.when-custom"/>
+         <ref name="tei_att.datable.custom.attribute.notBefore-custom"/>
+         <ref name="tei_att.datable.custom.attribute.notAfter-custom"/>
+         <ref name="tei_att.datable.custom.attribute.from-custom"/>
+         <ref name="tei_att.datable.custom.attribute.to-custom"/>
+         <ref name="tei_att.datable.custom.attribute.datingPoint"/>
+         <ref name="tei_att.datable.custom.attribute.datingMethod"/>
+         <optional>
+            <attribute name="when">
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">supplies the value of a date or time in a standard form.</a:documentation>
+               <choice>
+                  <data type="date"/>
+                  <data type="gYear"/>
+                  <data type="gMonth"/>
+                  <data type="gDay"/>
+                  <data type="gYearMonth"/>
+                  <data type="gMonthDay"/>
+                  <data type="time"/>
+                  <data type="dateTime"/>
+                  <data type="token">
+                     <param name="pattern">[0-9.,DHMPRSTWYZ/:+\-]+</param>
+                  </data>
+               </choice>
+            </attribute>
+         </optional>
          <attribute name="ident">
             <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">supplies an identifier for the application, independent of its version number or display name.</a:documentation>
             <data type="Name"/>
