@@ -6,7 +6,7 @@ default namespace tei = "http://www.tei-c.org/ns/1.0"
 namespace teix = "http://www.tei-c.org/ns/Examples"
 namespace xlink = "http://www.w3.org/1999/xlink"
 
-# Schema generated from ODD source 2020-05-17T01:57:48Z. .
+# Schema generated from ODD source 2020-05-17T10:41:33Z. .
 # TEI Edition: Version 4.0.0. Last updated on
 #	13th February 2020, revision ccd19b0ba
 # TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
@@ -1277,10 +1277,11 @@ tei_model.limitedPhrase =
 tei_model.divLike = tei_div
 tei_model.divGenLike = notAllowed
 tei_model.div1Like = notAllowed
+tei_model.applicationLike = notAllowed
 tei_model.teiHeaderPart =
   tei_encodingDesc | tei_profileDesc | tei_xenoData
 tei_model.sourceDescPart = notAllowed
-tei_model.encodingDescPart = tei_schemaRef | tei_unitDecl
+tei_model.encodingDescPart = tei_schemaRef | tei_unitDecl | tei_appInfo
 tei_model.profileDescPart =
   tei_abstract | tei_textClass | tei_correspDesc
 tei_att.formula.attributes = tei_att.formula.attribute.formula
@@ -2100,6 +2101,12 @@ tei_conversion =
     ]
     attribute toUnit { xsd:anyURI },
     empty
+  }
+tei_appInfo =
+  
+  ## (application information) records information about an application which has edited the TEI file. [2.3.11. The Application Information Element]
+  element appInfo {
+    tei_model.applicationLike+, tei_att.global.attributes, empty
   }
 tei_profileDesc =
   

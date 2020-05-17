@@ -1,6 +1,6 @@
 
 <!--
-DTD generated from ODD source 2020-05-17T01:57:18Z. .
+DTD generated from ODD source 2020-05-17T10:40:51Z. .
 TEI Edition: Version 4.0.0. Last updated on
 	13th February 2020, revision ccd19b0ba
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
@@ -793,6 +793,11 @@ to %teidata.word;  #IMPLIED'>
 <!ENTITY % model.div1Like_sequenceOptional ""> 
 <!ENTITY % model.div1Like_sequenceOptionalRepeatable ""> 
 <!ENTITY % model.div1Like_sequenceRepeatable ""> 
+<!ENTITY % model.applicationLike ""> 
+<!ENTITY % model.applicationLike_sequence ""> 
+<!ENTITY % model.applicationLike_sequenceOptional ""> 
+<!ENTITY % model.applicationLike_sequenceOptionalRepeatable ""> 
+<!ENTITY % model.applicationLike_sequenceRepeatable ""> 
 <!ENTITY % model.teiHeaderPart "encodingDesc |profileDesc |xenoData"> 
 <!ENTITY % model.teiHeaderPart_sequence "encodingDesc, profileDesc, xenoData"> 
 <!ENTITY % model.teiHeaderPart_sequenceOptional "encodingDesc?, profileDesc?, xenoData?"> 
@@ -803,11 +808,11 @@ to %teidata.word;  #IMPLIED'>
 <!ENTITY % model.sourceDescPart_sequenceOptional ""> 
 <!ENTITY % model.sourceDescPart_sequenceOptionalRepeatable ""> 
 <!ENTITY % model.sourceDescPart_sequenceRepeatable ""> 
-<!ENTITY % model.encodingDescPart "schemaRef |unitDecl"> 
-<!ENTITY % model.encodingDescPart_sequence "schemaRef, unitDecl"> 
-<!ENTITY % model.encodingDescPart_sequenceOptional "schemaRef?, unitDecl?"> 
-<!ENTITY % model.encodingDescPart_sequenceOptionalRepeatable "schemaRef*, unitDecl*"> 
-<!ENTITY % model.encodingDescPart_sequenceRepeatable "schemaRef+, unitDecl+"> 
+<!ENTITY % model.encodingDescPart "schemaRef |unitDecl |appInfo"> 
+<!ENTITY % model.encodingDescPart_sequence "schemaRef, unitDecl, appInfo"> 
+<!ENTITY % model.encodingDescPart_sequenceOptional "schemaRef?, unitDecl?, appInfo?"> 
+<!ENTITY % model.encodingDescPart_sequenceOptionalRepeatable "schemaRef*, unitDecl*, appInfo*"> 
+<!ENTITY % model.encodingDescPart_sequenceRepeatable "schemaRef+, unitDecl+, appInfo+"> 
 <!ENTITY % model.profileDescPart "abstract |textClass |correspDesc"> 
 <!ENTITY % model.profileDescPart_sequence "abstract, textClass, correspDesc"> 
 <!ENTITY % model.profileDescPart_sequenceOptional "abstract?, textClass?, correspDesc?"> 
@@ -1014,6 +1019,11 @@ type %teidata.enumerated;  #IMPLIED >
 <!ATTLIST anchor
  %tei_att.global.attributes;
  %tei_att.typed.attributes; >
+<!--doc:(application information) records information about an application which has edited the TEI file. [2.3.11. The Application Information Element] -->
+<!ELEMENT appInfo (_DUMMY_model.applicationLike)+>
+<!ATTLIST appInfo xmlns CDATA "http://www.tei-c.org/ns/1.0">
+<!ATTLIST appInfo
+ %tei_att.global.attributes; >
 <!--doc:in a bibliographic reference, contains the name(s) of an author, personal or corporate, of a work; for example in the same form as that provided by a recognized bibliographic name authority. [3.11.2.2. Titles, Authors, and Editors 2.2.1. The Title Statement] -->
 <!ELEMENT author %macro.phraseSeq;>
 <!ATTLIST author xmlns CDATA "http://www.tei-c.org/ns/1.0">
