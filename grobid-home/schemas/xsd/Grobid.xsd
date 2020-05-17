@@ -4,9 +4,9 @@
            elementFormDefault="qualified"
            targetNamespace="http://www.tei-c.org/ns/1.0">
    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
-              schemaLocation="xml.tmp"/>
+              schemaLocation="xml.xsd"/>
    <!--
-    Schema generated from ODD source 2020-05-17T10:40:59Z. .
+    Schema generated from ODD source 2020-05-17T11:07:11Z. .
     TEI Edition: Version 4.0.0. Last updated on
     	13th February 2020, revision ccd19b0ba
     TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
@@ -1373,6 +1373,19 @@ Suggested values include: 1] below; 2] bottom; 3] margin; 4] top; 5] opposite; 6
          </xs:simpleType>
       </xs:attribute>
    </xs:attributeGroup>
+   <xs:attributeGroup name="tei_att.translatable.attributes">
+      <xs:attributeGroup ref="tei:tei_att.translatable.attribute.versionDate"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="tei_att.translatable.attribute.versionDate">
+      <xs:attribute name="versionDate">
+         <xs:annotation>
+            <xs:documentation>specifies the date on which the source text was extracted and sent to the translator</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:union memberTypes="xs:date xs:gYear xs:gMonth xs:gDay xs:gYearMonth xs:gMonthDay xs:time xs:dateTime"/>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:attributeGroup>
    <xs:attributeGroup name="tei_att.citing.attributes">
       <xs:attributeGroup ref="tei:tei_att.citing.attribute.unit"/>
       <xs:attributeGroup ref="tei:tei_att.citing.attribute.from"/>
@@ -1747,32 +1760,38 @@ Suggested values include: 1] volume; 2] issue; 3] page; 4] line; 5] chapter; 6] 
       </xs:sequence>
    </xs:group>
    <xs:group name="tei_model.labelLike">
-      <xs:sequence>
+      <xs:choice>
+         <xs:element ref="tei:desc"/>
          <xs:element ref="tei:label"/>
-      </xs:sequence>
+      </xs:choice>
    </xs:group>
    <xs:group name="tei_model.labelLike_alternation">
-      <xs:sequence>
+      <xs:choice>
+         <xs:element ref="tei:desc"/>
          <xs:element ref="tei:label"/>
-      </xs:sequence>
+      </xs:choice>
    </xs:group>
    <xs:group name="tei_model.labelLike_sequence">
       <xs:sequence>
+         <xs:element ref="tei:desc"/>
          <xs:element ref="tei:label"/>
       </xs:sequence>
    </xs:group>
    <xs:group name="tei_model.labelLike_sequenceOptional">
       <xs:sequence>
+         <xs:element minOccurs="0" ref="tei:desc"/>
          <xs:element minOccurs="0" ref="tei:label"/>
       </xs:sequence>
    </xs:group>
    <xs:group name="tei_model.labelLike_sequenceOptionalRepeatable">
       <xs:sequence>
+         <xs:element minOccurs="0" maxOccurs="unbounded" ref="tei:desc"/>
          <xs:element minOccurs="0" maxOccurs="unbounded" ref="tei:label"/>
       </xs:sequence>
    </xs:group>
    <xs:group name="tei_model.labelLike_sequenceRepeatable">
       <xs:sequence>
+         <xs:element maxOccurs="unbounded" ref="tei:desc"/>
          <xs:element maxOccurs="unbounded" ref="tei:label"/>
       </xs:sequence>
    </xs:group>
@@ -2025,6 +2044,11 @@ Suggested values include: 1] volume; 2] issue; 3] page; 4] line; 5] chapter; 6] 
          </xs:complexContent>
       </xs:complexType>
    </xs:element>
+   <xs:group name="tei_model.descLike">
+      <xs:sequence>
+         <xs:element ref="tei:desc"/>
+      </xs:sequence>
+   </xs:group>
    <xs:group name="tei_model.respLike">
       <xs:choice>
          <xs:element ref="tei:author"/>
@@ -2266,6 +2290,62 @@ Suggested values include: 1] volume; 2] issue; 3] page; 4] line; 5] chapter; 6] 
          <xs:attributeGroup ref="tei:tei_att.written.attributes"/>
       </xs:complexType>
    </xs:element>
+   <xs:element name="tei_model.applicationLike" abstract="true">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group maxOccurs="unbounded" ref="tei:tei_model.labelLike"/>
+            <xs:choice>
+               <xs:element minOccurs="0" maxOccurs="unbounded" ref="tei:tei_model.ptrLike"/>
+               <xs:group minOccurs="0" maxOccurs="unbounded" ref="tei:tei_model.pLike"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tei:tei_att.global.attributes"/>
+         <xs:attributeGroup ref="tei:tei_att.typed.attributes"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.attribute.calendar"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.attribute.period"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.w3c.attribute.notBefore"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.w3c.attribute.notAfter"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.w3c.attribute.from"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.w3c.attribute.to"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.iso.attribute.when-iso"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.iso.attribute.notBefore-iso"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.iso.attribute.notAfter-iso"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.iso.attribute.from-iso"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.iso.attribute.to-iso"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.custom.attribute.when-custom"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.custom.attribute.notBefore-custom"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.custom.attribute.notAfter-custom"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.custom.attribute.from-custom"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.custom.attribute.to-custom"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.custom.attribute.datingPoint"/>
+         <xs:attributeGroup ref="tei:tei_att.datable.custom.attribute.datingMethod"/>
+         <xs:attribute name="when">
+            <xs:annotation>
+               <xs:documentation/>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="when">
+            <xs:annotation>
+               <xs:documentation/>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="ident" use="required" type="xs:Name">
+            <xs:annotation>
+               <xs:documentation>supplies an identifier for the application, independent of its version number or display name.</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="version" use="required">
+            <xs:annotation>
+               <xs:documentation>supplies a version number for the application, independent of its identifier or display name.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:token">
+                  <xs:pattern value="[\d]+[a-z]*[\d]*(\.[\d]+[a-z]*[\d]*){0,3}"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:attribute>
+      </xs:complexType>
+   </xs:element>
    <xs:element name="tei_model.teiHeaderPart" abstract="true"/>
    <xs:element name="tei_model.encodingDescPart" abstract="true"/>
    <xs:element name="tei_model.profileDescPart" abstract="true"/>
@@ -2365,6 +2445,30 @@ Suggested values include: 1] volume; 2] issue; 3] page; 4] line; 5] chapter; 6] 
             <xs:extension base="tei:tei_macro.paraContent">
                <xs:attributeGroup ref="tei:tei_att.global.attributes"/>
                <xs:attributeGroup ref="tei:tei_att.written.attributes"/>
+            </xs:extension>
+         </xs:complexContent>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="desc">
+      <xs:annotation>
+         <xs:documentation>(description) contains a brief description of the object documented by its parent element, typically a documentation element or an entity. [22.4.1. Description of Components]</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:complexContent>
+            <xs:extension base="tei:tei_macro.limitedContent">
+               <xs:attributeGroup ref="tei:tei_att.global.attributes"/>
+               <xs:attributeGroup ref="tei:tei_att.translatable.attributes"/>
+               <xs:attributeGroup ref="tei:tei_att.typed.attribute.subtype"/>
+               <xs:attribute name="type">
+                  <xs:annotation>
+                     <xs:documentation>characterizes the element in some sense, using any convenient classification scheme or typology.</xs:documentation>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:token">
+                        <xs:pattern value="[^\p{C}\p{Z}]+"/>
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:attribute>
             </xs:extension>
          </xs:complexContent>
       </xs:complexType>
@@ -2541,6 +2645,7 @@ Measures]</xs:documentation>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
                <xs:group ref="tei:tei_model.divTop"/>
                <xs:group ref="tei:tei_model.global"/>
+               <xs:element minOccurs="0" maxOccurs="unbounded" ref="tei:desc"/>
             </xs:choice>
             <xs:choice>
                <xs:sequence maxOccurs="unbounded">
@@ -2703,6 +2808,7 @@ Suggested values include: 1] gloss; 2] index; 3] instructions; 4] litany; 5] syl
          <xs:documentation>indicates the location of a graphic or illustration, either forming part of a text, or providing an image of it. [3.9. Graphics and Other Non-textual Components 11.1. Digital Facsimiles]</xs:documentation>
       </xs:annotation>
       <xs:complexType>
+         <xs:group minOccurs="0" maxOccurs="unbounded" ref="tei:tei_model.descLike"/>
          <xs:attributeGroup ref="tei:tei_att.global.attributes"/>
          <xs:attributeGroup ref="tei:tei_att.media.attributes"/>
          <xs:attributeGroup ref="tei:tei_att.resourced.attributes"/>
@@ -3272,6 +3378,7 @@ Suggested values include: 1] ISBN; 2] ISSN; 3] DOI; 4] URI; 5] VIAF; 6] ESTC; 7]
          <xs:documentation>(schema reference) describes or points to a related customization or schema file [2.3.10. The Schema Specification]</xs:documentation>
       </xs:annotation>
       <xs:complexType>
+         <xs:group minOccurs="0" ref="tei:tei_model.descLike"/>
          <xs:attributeGroup ref="tei:tei_att.global.attributes"/>
          <xs:attributeGroup ref="tei:tei_att.typed.attributes"/>
          <xs:attributeGroup ref="tei:tei_att.resourced.attributes"/>
@@ -3324,11 +3431,20 @@ Suggested values include: 1] ISBN; 2] ISSN; 3] DOI; 4] URI; 5] VIAF; 6] ESTC; 7]
          <xs:attribute name="toUnit" use="required" type="xs:anyURI"/>
       </xs:complexType>
    </xs:element>
-   <xs:element name="appInfo"
-               substitutionGroup="tei:tei_model.encodingDescPart"
-               abstract="true">
+   <xs:element name="appInfo" substitutionGroup="tei:tei_model.encodingDescPart">
       <xs:annotation>
          <xs:documentation>(application information) records information about an application which has edited the TEI file. [2.3.11. The Application Information Element]</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="tei:tei_model.applicationLike"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tei:tei_att.global.attributes"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="application" substitutionGroup="tei:tei_model.applicationLike">
+      <xs:annotation>
+         <xs:documentation>provides information about an application which has acted upon the document. [2.3.11. The Application Information Element]</xs:documentation>
       </xs:annotation>
    </xs:element>
    <xs:element name="profileDesc" substitutionGroup="tei:tei_model.teiHeaderPart">
@@ -4170,6 +4286,7 @@ Sample values include: 1] sponsor; 2] recommend; 3] discredit; 4] pledged</xs:do
       <xs:complexType>
          <xs:sequence>
             <xs:group minOccurs="0" maxOccurs="unbounded" ref="tei:tei_model.headLike"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="tei:desc"/>
             <xs:group maxOccurs="unbounded" ref="tei:tei_model.objectLike"/>
          </xs:sequence>
          <xs:attributeGroup ref="tei:tei_att.global.attributes"/>

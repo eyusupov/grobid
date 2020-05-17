@@ -1,6 +1,6 @@
 
 <!--
-DTD generated from ODD source 2020-05-17T10:49:46Z. .
+DTD generated from ODD source 2020-05-17T11:06:59Z. .
 TEI Edition: Version 4.0.0. Last updated on
 	13th February 2020, revision ccd19b0ba
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
@@ -1034,7 +1034,26 @@ type %teidata.enumerated;  #IMPLIED >
 <!ATTLIST application
  %tei_att.global.attributes;
  %tei_att.typed.attributes;
- %tei_att.datable.attributes;
+ %tei_att.datable.attribute.calendar;
+ %tei_att.datable.attribute.period;
+ %tei_att.datable.w3c.attribute.notBefore;
+ %tei_att.datable.w3c.attribute.notAfter;
+ %tei_att.datable.w3c.attribute.from;
+ %tei_att.datable.w3c.attribute.to;
+ %tei_att.datable.iso.attribute.when-iso;
+ %tei_att.datable.iso.attribute.notBefore-iso;
+ %tei_att.datable.iso.attribute.notAfter-iso;
+ %tei_att.datable.iso.attribute.from-iso;
+ %tei_att.datable.iso.attribute.to-iso;
+ %tei_att.datable.custom.attribute.when-custom;
+ %tei_att.datable.custom.attribute.notBefore-custom;
+ %tei_att.datable.custom.attribute.notAfter-custom;
+ %tei_att.datable.custom.attribute.from-custom;
+ %tei_att.datable.custom.attribute.to-custom;
+ %tei_att.datable.custom.attribute.datingPoint;
+ %tei_att.datable.custom.attribute.datingMethod;
+when CDATA  #IMPLIED
+when CDATA  #IMPLIED
 ident %teidata.name;  #REQUIRED
 version %teidata.versionNumber;  #REQUIRED >
 <!--doc:in a bibliographic reference, contains the name(s) of an author, personal or corporate, of a work; for example in the same form as that provided by a recognized bibliographic name authority. [3.11.2.2. Titles, Authors, and Editors 2.2.1. The Title Statement] -->
